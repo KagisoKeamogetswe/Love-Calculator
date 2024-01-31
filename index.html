@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Calculator</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Love Calculator</h2>
+        <form id="loveForm">
+          <div class="form-group">
+            <label for="yourName">Your Name</label>
+            <input type="text" class="form-control" id="yourName" required>
+          </div>
+          <div class="form-group">
+            <label for="partnerName">Partner's Name</label>
+            <input type="text" class="form-control" id="partnerName" required>
+          </div>
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate Love Percentage</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#calculateBtn').on('click', function() {
+        const yourName = $('#yourName').val();
+        const partnerName = $('#partnerName').val();
+
+        const apiUrl = `https://love-calculator.p.rapidapi.com/getPercentage?sname=${yourName}&fname=${partnerName}`;
+
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: apiUrl,
+          method: 'GET',
+          headers: {
+            'X-RapidAPI-Key': 'YOUR_RAPIDAPI_KEY', // Replace with your RapidAPI key
+            'X-RapidAPI-Host': 'love-calculator.p.rapidapi.com'
+          }
+        };
+
+        $.ajax(settings).done(function (response) {
+          const result = `
+            <p class="lead">Love Percentage between ${yourName} and ${partnerName} is ${response.percentage}%</p>
+            <p class="lead">Result: ${response.result}</p>
+          `;
+          $('#result').html(result);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
